@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Lista de Alumnos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Color de fondo claro */
+        }
+        .container {
+            background-color: white; /* Fondo blanco para el contenedor */
+            border-radius: 8px; /* Bordes redondeados */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            padding: 20px; /* Espaciado interno */
+            margin-top: 10px;
+        }
+        h1 {
+            color: #007bff; /* Color azul para el título */
+        }
+        .table th {
+            background-color: #007bff; /* Azul para el encabezado de la tabla */
+            color: white; /* Texto blanco para el encabezado */
+        }
+        .btn-secondary {
+            background-color: #6c757d; /* Color gris para los botones secundarios */
+            border-color: #6c757d; /* Borde gris */
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268; /* Color gris oscuro al pasar el mouse */
+        }
+        .btn-primary {
+            background-color: #007bff; /* Color azul para el botón Agregar */
+            border-color: #007bff; /* Borde azul */
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* Color azul oscuro al pasar el mouse */
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container mt-5">
+    <h1>Lista de Alumnos</h1>
+
+    <!-- Botones para descargar PDF y XLS -->
+    <div class="mb-3">
+        <a class="btn btn-secondary" th:href="@{/verAlumnos(format=pdf)}" role="button">Descargar PDF</a>
+        <a class="btn btn-secondary" th:href="@{/verAlumnos(format=xlsx)}" role="button">Descargar XLS</a>
+    </div>
+
+    <a class="btn btn-primary mb-3" th:href="@{/formAlumno}">Agregar Alumno</a>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Email</th>
+            <th>Edad</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="alumno : ${alumnos}">
+            <td th:text="${alumno.id}"></td>
+            <td th:text="${alumno.nombre}"></td>
+            <td th:text="${alumno.apellidos}"></td>
+            <td th:text="${alumno.email}"></td>
+            <td th:text="${alumno.edad}"></td>
+            <td>
+                <a th:href="@{/form/alumno/{id}(id=${alumno.id})}" class="btn btn-warning">Editar</a>
+                <form th:action="@{/eliminarAlumno/{id}(id=${alumno.id})}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este alumno?');">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
